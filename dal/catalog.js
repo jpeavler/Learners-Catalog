@@ -86,7 +86,28 @@ const getTermByName = (name) => {
 };
 
 //CREATE function
-const addTerm = (term) =>{};
+const addTerm = (term) =>{
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, async function(err, client) {
+            if(err) {
+                reject(err);
+            }else{
+                console.log("Connected to DB for CREATE");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                collection.insertOne(term, (err, result) => {
+                    if(err) {
+                        reject(err);
+                    }else{
+                        resolve(result.ops[0]);
+                        client.close;
+                    }
+                });
+            }
+        });
+    });
+    return myPromise;
+};
 
 //UPDATE: Put function
 const updateTerm = (id, term) =>{};
@@ -100,5 +121,6 @@ const deleteTerm = (id) =>{};
 module.exports = {
     getCatalog,
     getTermByID,
-    getTermByName
+    getTermByName,
+    addTerm
 }
