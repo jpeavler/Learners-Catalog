@@ -110,10 +110,50 @@ const addTerm = (term) =>{
 };
 
 //UPDATE: Put function
-const updateTerm = (id, term) =>{};
+const updateTermV = (id, term) =>{};
 
 //UPDATE: Patch function, will be used to archive/restore terms
-const updateTermValues = (id, term) =>{};
+const updateTermValues = (id, term) =>{
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, function(err, client) {
+            if(err) {
+                reject(err);
+            }else{
+                console.log("Connected to DB for UPDATE: PATCH");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                try{
+                    const _id = new ObjectID(id);
+                    collection.updateOne({_id},
+                        {$set: {...term}},
+                        function (err, data){
+                            if(err) {
+                                reject(err);
+                            }else{
+                                if(data.result.n > 0) {
+                                    collection.find({_id}).toArray(
+                                        function(err, docs){
+                                            if(err) {
+                                                reject(err);
+                                            }else{
+                                                resolve(docs[0]);
+                                            }
+                                        }
+                                    )
+                                }else{
+                                    resolve({error: "Nothing happened"});
+                                }
+                            }
+                        });
+                }catch(err){
+                    reject({error: "ID has to be in ObjectID format"});
+                }
+            }
+        });
+    });
+    return myPromise
+};
+
 
 //DELETE (archive) function. Should update boolean
 const deleteTerm = (id) =>{};
