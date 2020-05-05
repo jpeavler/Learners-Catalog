@@ -110,10 +110,34 @@ const addTerm = (term) =>{
 };
 
 //UPDATE: Put function
-const updateTermV = (id, term) =>{};
+const updateTerm = (id, term) => {
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, function(err, client) {
+            if(err) {
+                reject(err);
+            }else{
+                console.log('Connected to DB for UPDATE: PUT');
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                collection.replaceOne({_id: ObjectID(id)},
+                term,
+                {upsert: true},
+                (err, result) => {
+                    if(err) {
+                        reject(err);
+                    }else{
+                        resolve({updated_id: id});
+                        client.close;
+                    }
+                });
+            }
+        });
+    });
+    return myPromise
+};
 
 //UPDATE: Patch function, will be used to archive/restore terms
-const updateTermValues = (id, term) =>{
+const updateTermValues = (id, term) => {
     const myPromise = new Promise((resolve, reject) => {
         MongoClient.connect(url, settings, function(err, client) {
             if(err) {
@@ -162,5 +186,7 @@ module.exports = {
     getCatalog,
     getTermByID,
     getTermByName,
-    addTerm
+    addTerm,
+    updateTerm,
+    updateTermValues
 }
