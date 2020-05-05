@@ -10,7 +10,29 @@ const dbName = 'learners_catalog';
 const colName = 'terms';
 
 //READ functions
-const getCatalog = () =>{};
+const getCatalog = () =>{
+    const myPromise = new Promise((resolve, reject) =>{
+        MongoClient.connect(url, settings, function(err, client){
+            if(err){
+                reject(err);
+            }else{
+                console.log("Connected to DB for READ");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                collection.find({}).toArray(function(err, docs){
+                    if(err){
+                        reject(err);
+                    }else{
+                        console.log("Found the Catalog of Terms");
+                        resolve(docs);
+                        client.close();
+                    }
+                })
+            }
+        });
+    });
+    return myPromise;
+};
 const getTermByID = (id) =>{};
 const getTermByName = (name) =>{};
 
