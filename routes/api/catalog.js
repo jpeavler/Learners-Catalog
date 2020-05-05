@@ -31,7 +31,8 @@ router.get('/:id', async function(req, res) {
 });
 router.get('/name/:name', async function(req, res) {
     try{
-        const term = await getTermByName(name);
+        const termName = req.params.name.replace(/_/g, " ");
+        const term = await getTermByName(termName);
         res.send(term);
     }catch(err) {
         if(err.error) {
