@@ -3,7 +3,8 @@ const router = express.Router();
 const {
     getCatalog,
     getTermByID,
-    getTermByName
+    getTermByName,
+    addTerm
 } = require('../../dal/catalog');
 
 //Get Routers
@@ -44,4 +45,18 @@ router.get('/name/:name', async function(req, res) {
     }
 });
 
+//Post router
+router.post('/', async function(req,res) {
+    try{
+        const newTerm = await addTerm(req.body);
+        res.send(newTerm);
+    }catch(err) {
+        if(err.error) {
+            res.status(400).send(err);
+        }else{
+            console.log(err);
+            res.status(500).send('Internal server issue, check logs');
+        }
+    }
+})
 module.exports = router;
