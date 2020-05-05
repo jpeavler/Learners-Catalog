@@ -12,15 +12,15 @@ const colName = 'terms';
 //READ functions
 const getCatalog = () =>{
     const myPromise = new Promise((resolve, reject) =>{
-        MongoClient.connect(url, settings, function(err, client){
-            if(err){
+        MongoClient.connect(url, settings, function(err, client) {
+            if(err) {
                 reject(err);
             }else{
                 console.log("Connected to DB for READ");
                 const db = client.db(dbName);
                 const collection = db.collection(colName);
                 collection.find({}).toArray(function(err, docs){
-                    if(err){
+                    if(err) {
                         reject(err);
                     }else{
                         console.log("Found the Catalog of Terms");
@@ -36,7 +36,7 @@ const getCatalog = () =>{
 const getTermByID = (id) =>{
     const myPromise = new Promise((resolve, reject) => {
         MongoClient.connect(url, settings, async function(err, client) {
-            if(err){
+            if(err) {
                 reject(err);
             }else{
                 console.log("Connected to DB for READ by ID");
@@ -45,13 +45,13 @@ const getTermByID = (id) =>{
                 try{
                     const _id = new ObjectID(id);
                     const result = await collection.findOne({_id});
-                    if(result){
+                    if(result) {
                         resolve(result);
-                    }else{
+                    }else {
                         reject({error: "ID not found in database"});
                     }
                     client.close();
-                }catch(err){
+                }catch(err) {
                     reject({error: "ID must be in ObjectID format"});
                 }
             }
@@ -59,7 +59,31 @@ const getTermByID = (id) =>{
     });
     return myPromise;
 };
-const getTermByName = (name) =>{};
+const getTermByName = (name) => {
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, async function(err, client) {
+            if(err) {
+                reject(err);
+            }else{
+                console.log("Connected to DB for READ by Name");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                try{
+                    const result = await collection.findOne({name});
+                    if(result) {
+                        resolve(result);
+                    }else{
+                        reject({error: "Name not found in Database"});
+                    }
+                    client.close();
+                }catch(err) {
+                    reject(err);
+                }
+            }
+        });
+    });
+    return myPromise;
+};
 
 //CREATE function
 const addTerm = (term) =>{};
@@ -75,5 +99,6 @@ const deleteTerm = (id) =>{};
 
 module.exports = {
     getCatalog,
-    getTermByID
+    getTermByID,
+    getTermByName
 }
