@@ -178,9 +178,37 @@ const updateTermValues = (id, term) => {
     return myPromise
 };
 
-
-//DELETE (archive) function. Should update boolean
-const deleteTerm = (id) =>{};
+//DELETE function. While the check won't happen at this layer, terms should only be deleted if archived or deemed inappropriate
+const deleteTerm = (id) => {
+    const myPromise = new Promise((resolve, reject) => {
+        MongoClient.connect(url, settings, async function(err, client) {
+            if(err){
+                reject(err);
+            }else{
+                console.log("Connected to DB for DELETE");
+                const db = client.db(dbName);
+                const collection = db.collection(colName);
+                try{
+                    const _id = new ObjectID(id);
+                    collection.findOneAndDelete({_id}, function (err, data) {
+                        if(err) {
+                            reject(err);
+                        }else{
+                            if(data.lastErrorObject.n > 0) {
+                                resolve(data.value);
+                            }else{
+                                resolve({error: "ID doesn't exist in Database"})
+                            }
+                        }
+                    });
+                }catch(err) {
+                    reject({error: "ID has to be in ObjectID format"});
+                }
+            }
+        });
+    });
+    return myPromise;
+};
 
 module.exports = {
     getCatalog,
@@ -188,5 +216,6 @@ module.exports = {
     getTermByName,
     addTerm,
     updateTerm,
-    updateTermValues
+    updateTermValues,
+    deleteTerm
 }
