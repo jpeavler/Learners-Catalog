@@ -5,7 +5,9 @@ const {
     getTermByID,
     getTermByName,
     addTerm,
-    updateTerm
+    updateTerm,
+    updateTermValues,
+    deleteTerm
 } = require('../../dal/catalog');
 
 //Get Routers
@@ -72,6 +74,21 @@ router.put('/:id', async function(req,res) {
         }else{
             console.log(err);
             res.status(500).send('Internal Server Issue, check logs');
+        }
+    }
+});
+
+//Patch router
+router.patch('/:id', async function(req,res) {
+    try{
+        const term = await updateTermValues(req.params.id, req.body);
+        res.send(term);
+    }catch(err){
+        if(err.error) {
+            res.status(400).send(err);
+        }else{
+            console.log(err);
+            res.status(500).send("Internal Sever Issue, check logs");
         }
     }
 })
