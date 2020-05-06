@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import Term from './Term';
 import AddTerm from './AddTerm'
+import UpdateTerm from './UpdateTerm'
 
 const Catalog = () => {
     const [catalog, setCatalog] = useState([]);
     const [isCreate, setIsCreate] = useState(true);
+    const [termToUpdate, setUpdateTerm] = useState({});
     const [displayArchived, setArchived] = useState(false);
     const [displayActive, setActive] = useState(true);
 
@@ -24,16 +26,35 @@ const Catalog = () => {
         }).then(response => response.json())
             .then(getCatalog);
     }
+    const updateTerm = (term) => {
+        setIsCreate(false);
+        setUpdateTerm(term);
+    }
 
+    const renderForm = () => {
+        let formToRender;
+        if(isCreate){
+            formToRender = <AddTerm key="createForm"refresh={getCatalog}/>
+        }else{
+            const data = termToUpdate;
+            console.log(`Value of data: ${data}`);
+            formToRender = <UpdateTerm key={data._id} 
+                id={data._id} 
+                term={data} 
+                refresh={getCatalog}/>
+        }
+        return formToRender;
+    }
     const displayCatalog = catalog.map((term) => {
         return <Term key = {term._id}
                 term={term}
-                deleteTerm={deleteTerm}/>
+                deleteTerm={deleteTerm} 
+                updateTerm={updateTerm}/>
     });
 
     return(
         <div className='catalog'>
-            <AddTerm refresh={getCatalog}/>
+            {renderForm()}
             {displayCatalog}
         </div>
     )
