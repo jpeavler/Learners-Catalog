@@ -33,7 +33,7 @@ const Catalog = () => {
 
     return(
         <div className='catalog'>
-            <AddTerm/>
+            <AddTerm refresh={getCatalog}/>
             {displayCatalog}
         </div>
     )

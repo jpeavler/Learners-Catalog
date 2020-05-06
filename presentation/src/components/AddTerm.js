@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 
-const AddTerm = () => {
+const AddTerm = ({refresh}) => {
     const [name, setName] = useState('');
     const [definition, setDef] = useState('');
     const [resources, setRes] = useState([]);
@@ -17,7 +17,12 @@ const AddTerm = () => {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify(term)
-        })
+        }).then(refresh)
+            .then(() => setName(''))
+            .then(() => setDef(''))
+            .then(() => setRes([]))
+            .then(() => setLink(''))
+            .then(() => setDisName(''));
     }
 
     return(
