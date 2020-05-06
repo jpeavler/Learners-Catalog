@@ -18,10 +18,17 @@ const Catalog = () => {
             .then(catalog => setCatalog(catalog))
             .then(() => setIsCreate(true));
     }
+    const deleteTerm = (id) => {
+        fetch(`${process.env.REACT_APP_API_URL}/api/catalog/${id}`, {
+            method: 'DELETE'
+        }).then(response => response.json())
+            .then(getCatalog);
+    }
 
     const displayCatalog = catalog.map((term) => {
         return <Term key = {term._id}
-                term={term}/>
+                term={term}
+                deleteTerm={deleteTerm}/>
     });
 
     return(
