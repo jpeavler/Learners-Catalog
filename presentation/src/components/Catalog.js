@@ -31,13 +31,21 @@ const Catalog = () => {
         setUpdateTerm(term);
     }
 
+    const archiveTerm = (id) => {
+        const archivedTerm = {archived: true}
+        fetch(`${process.env.REACT_APP_API_URL}/api/catalog/${id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify(archivedTerm)
+        }).then(getCatalog);
+    }
+
     const renderForm = () => {
         let formToRender;
         if(isCreate){
             formToRender = <AddTerm key="createForm"refresh={getCatalog}/>
         }else{
             const data = termToUpdate;
-            console.log(`Value of data: ${data}`);
             formToRender = <UpdateTerm key={data._id} 
                 id={data._id} 
                 term={data} 
@@ -49,7 +57,8 @@ const Catalog = () => {
         return <Term key = {term._id}
                 term={term}
                 deleteTerm={deleteTerm} 
-                updateTerm={updateTerm}/>
+                updateTerm={updateTerm} 
+                archiveTerm={archiveTerm}/>
     });
 
     return(
