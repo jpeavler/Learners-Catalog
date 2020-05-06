@@ -12,7 +12,8 @@ const AddTerm = ({refresh}) => {
         const tempArr = resources;
         tempArr.push({link, displayName});
         setRes(tempArr);
-        const term = {name, definition, resources};
+        const archived = false;
+        const term = {name, definition, resources, archived};
         fetch(`${process.env.REACT_APP_API_URL}/api/catalog`, {
             method: 'POST',
             headers: {'Content-Type' : 'application/json'},
