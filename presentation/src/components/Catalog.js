@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Term from './Term';
+import AddTerm from './AddTerm'
 
 const Catalog = () => {
     const [catalog, setCatalog] = useState([]);
@@ -9,7 +10,7 @@ const Catalog = () => {
 
     useEffect(() => {
         getCatalog();
-    });
+    }, []);
 
     const getCatalog = () =>{
         fetch(`${process.env.REACT_APP_API_URL}/api/catalog`)
@@ -25,6 +26,7 @@ const Catalog = () => {
 
     return(
         <div className='catalog'>
+            <AddTerm/>
             {displayCatalog}
         </div>
     )
