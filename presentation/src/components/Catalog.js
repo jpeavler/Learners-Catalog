@@ -86,10 +86,11 @@ const Catalog = () => {
     }
     return(
         <div className='catalog'>
+            <h1>Web Development Terminology</h1>
             {renderForm()}
             {archiveHideButton}
             {activeHideButton}
-            {displayCatalog}
+            <div className='wrapper'>{displayCatalog}</div>
         </div>
     )
 }
