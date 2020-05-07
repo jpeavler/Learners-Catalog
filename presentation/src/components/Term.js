@@ -2,9 +2,20 @@ import React, {useState} from 'react';
 import AddResource from './AddResource';
 
 const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm, refresh}) => {
+    const removeRes = (index) => {
+        const tempArr = term.resources;
+        tempArr.splice(index, 1);
+        fetch(`${process.env.REACT_APP_API_URL}/api/catalog/${term._id}`, {
+            method: 'PATCH',
+            headers: {'Content-Type' : 'application/json'},
+            body: JSON.stringify({resources:tempArr})
+        }).then(refresh)
+    }
     const displayResources = term.resources.map((resource, index) => {
         return(
-            <li key={index}><a href={resource.link}>{resource.displayName}</a></li>
+            <li key={index}><a href={resource.link}>{resource.displayName}</a>
+                <button onClick={() => removeRes(index)}>Remove Resource</button>
+            </li>
         )
     });
     let deleteButton;
