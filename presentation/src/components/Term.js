@@ -26,7 +26,7 @@ const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm, refresh})
             {updateButton}
             <h4>Resources for {term.name}</h4>
             <AddResource term ={term}
-            id={term.id} 
+            id={term._id} 
             refresh={refresh}/>
             <ul>{displayResources}</ul>
         </div>
