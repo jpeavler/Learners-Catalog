@@ -13,7 +13,9 @@ const AddResource = ({refresh, term, id}) => {
             method: 'PATCH',
             headers: {'Content-Type' : 'application/json'},
             body: JSON.stringify({resources})
-        }).then(refresh);
+        }).then(refresh)
+            .then(() => setLink(''))
+            .then(() => setDisName(''))
     }
     return (
         <form onSubmit = {handleSubmit}>
