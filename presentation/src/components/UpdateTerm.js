@@ -10,7 +10,7 @@ const UpdateTerm = ({refresh, term, id}) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         const tempArr = resources;
-        tempArr.push({link, displayName});
+        tempArr[0] = {link, displayName};
         setRes(tempArr);
         const term = {name, definition, resources};
         fetch(`${process.env.REACT_APP_API_URL}/api/catalog/${id}`, {
@@ -40,13 +40,11 @@ const UpdateTerm = ({refresh, term, id}) => {
             <input value={link} 
                 type='text'
                 onChange={({target}) => setLink(target.value)}
-                placeholder='Source Link'
-                required/>
+                placeholder='First Source Link'/>
             <input value={displayName} 
                 type='text'
                 onChange={({target}) => setDisName(target.value)}
-                placeholder='Source Name'
-                required/>
+                placeholder='First Source Name'/>
             <input type='submit'
                 value='Edit Term'/>
             <input type='button'

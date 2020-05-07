@@ -20,11 +20,11 @@ const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm}) => {
         <div>
             <h3>{term.name}</h3>
             <p>Definition: {term.definition}</p>
-            <h4>Resources for {term.name}</h4>
-            <ul>{displayResources}</ul>
             {archiveButton}
             {deleteButton}
             {updateButton}
+            <h4>Resources for {term.name}</h4>
+            <ul>{displayResources}</ul>
         </div>
     )
 }
