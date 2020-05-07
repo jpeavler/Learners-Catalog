@@ -30,14 +30,21 @@ const Catalog = () => {
         setIsCreate(false);
         setUpdateTerm(term);
     }
-
-    const archiveTerm = (id) => {
-        const archivedTerm = {archived: true}
+    const toggleArchive = (term, id) =>{
         fetch(`${process.env.REACT_APP_API_URL}/api/catalog/${id}`, {
             method: 'PATCH',
             headers: {'Content-Type' : 'application/json'},
-            body: JSON.stringify(archivedTerm)
+            body: JSON.stringify(term)
         }).then(getCatalog);
+    }
+    const archiveTerm = (id) => {
+        const archivedTerm = {archived: true};
+        toggleArchive(archivedTerm, id);
+    }
+
+    const restoreTerm = (id) => {
+        const restoredTerm = {archived: false};
+        toggleArchive(restoredTerm, id);
     }
 
     const renderForm = () => {
@@ -58,7 +65,8 @@ const Catalog = () => {
                 term={term}
                 deleteTerm={deleteTerm} 
                 updateTerm={updateTerm} 
-                archiveTerm={archiveTerm}/>
+                archiveTerm={archiveTerm}
+                restoreTerm={restoreTerm}/>
     });
 
     return(
