@@ -30,21 +30,7 @@ const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm, refresh, 
     }
     let renderTerm = () => {
         let displayedTerm;
-        if(term.archived && displayArchived){
-            displayedTerm = <>
-            <h3>{term.name}</h3>
-            <p>Definition: {term.definition}</p>
-            {archiveButton}
-            {deleteButton}
-            {updateButton}
-            <h4>Resources for {term.name}</h4>
-            <AddResource term ={term}
-            id={term._id} 
-            refresh={refresh}/>
-            <ul>{displayResources}</ul>
-        </>
-        }
-        if((!term.archived) && displayActive){
+        if((term.archived && displayArchived) || ((!term.archived) && displayActive)){
             displayedTerm = <>
             <h3>{term.name}</h3>
             <p>Definition: {term.definition}</p>
