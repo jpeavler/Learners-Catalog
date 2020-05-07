@@ -66,7 +66,8 @@ const Catalog = () => {
                 deleteTerm={deleteTerm} 
                 updateTerm={updateTerm} 
                 archiveTerm={archiveTerm}
-                restoreTerm={restoreTerm}/>
+                restoreTerm={restoreTerm} 
+                refresh={getCatalog}/>
     });
 
     return(

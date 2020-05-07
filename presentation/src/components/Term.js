@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
+import AddResource from './AddResource';
 
-const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm}) => {
+const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm, refresh}) => {
     const displayResources = term.resources.map((resource, index) => {
         return(
             <li key={index}><a href={resource.link}>{resource.displayName}</a></li>
@@ -24,6 +25,9 @@ const Term = ({term, deleteTerm, updateTerm, archiveTerm, restoreTerm}) => {
             {deleteButton}
             {updateButton}
             <h4>Resources for {term.name}</h4>
+            <AddResource term ={term}
+            id={term.id} 
+            refresh={refresh}/>
             <ul>{displayResources}</ul>
         </div>
     )
