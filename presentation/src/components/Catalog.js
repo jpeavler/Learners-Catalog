@@ -67,12 +67,28 @@ const Catalog = () => {
                 updateTerm={updateTerm} 
                 archiveTerm={archiveTerm}
                 restoreTerm={restoreTerm} 
-                refresh={getCatalog}/>
+                refresh={getCatalog} 
+                displayActive={displayActive} 
+                displayArchived={displayArchived}/>
     });
 
+    let archiveHideButton;
+    if(displayArchived){
+        archiveHideButton = <button onClick={() => setArchived(!displayArchived)}>Hide Archived Terms</button>
+    }else{
+        archiveHideButton = <button onClick={() => setArchived(!displayArchived)}>Display Archived Terms</button>
+    }
+    let activeHideButton;
+    if(displayActive){
+        activeHideButton = <button onClick={() => setActive(!displayActive)}>Hide Active Terms</button>
+    }else{
+        activeHideButton = <button onClick={() => setActive(!displayActive)}>Show Active Terms</button>
+    }
     return(
         <div className='catalog'>
             {renderForm()}
+            {archiveHideButton}
+            {activeHideButton}
             {displayCatalog}
         </div>
     )
